@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | Edit Profile</title>
+
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/profile-edit.css}">
+</head>
+<body>
+
+<div class="profile-container">
+
+    <!-- Navbar -->
+    <header class="profile-navbar">
+
+        <a th:href="@{/dashboard}" class="brand">
+            <span class="brand-icon">✦</span>
+            SkillBridge
+        </a>
+
+        <div class="nav-actions">
+            <a th:href="@{/profile}" class="back-button">
+                ← My Profile
+            </a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+
+    </header>
+
+    <!-- Edit Profile Header -->
+    <section class="edit-header">
+
+        <div class="edit-header-icon">✎</div>
+
+        <div>
+            <p class="profile-tag">PERSONAL SETTINGS</p>
+            <h1>Edit Your Profile</h1>
+            <p class="edit-subtitle">
+                Keep your SkillBridge profile up to date.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- Edit Form -->
+    <main class="edit-content">
+
+        <section class="profile-card edit-card">
+
+            <div class="card-heading">
+                <div>
+                    <h2>Personal Information</h2>
+                    <p>Update your name and email address.</p>
+                </div>
+
+                <span class="heading-icon">◈</span>
+            </div>
+
+            <!-- Error Message -->
+            <div class="message error-message"
+                 th:if="${error != null}"
+                 th:text="${error}">
+            </div>
+
+            <form th:action="@{/profile/edit}" method="post" class="edit-form">
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        th:value="${user.fullName}"
+                        placeholder="Enter your full name"
+                        maxlength="100"
+                        required>
+                </div>
+
+                <!-- Username -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        th:value="${user.username}"
+                        readonly>
+
+                    <span class="field-note">
+                        Your username cannot be changed.
+                    </span>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        th:value="${user.email}"
+                        placeholder="Enter your email address"
+                        maxlength="150"
+                        required>
+                </div>
+
+                <!-- Account Type -->
+                <div class="form-group">
+                    <label for="accountType">Account Type</label>
+
+                    <input
+                        type="text"
+                        id="accountType"
+                        th:value="${user.accountType}"
+                        readonly>
+
+                    <span class="field-note">
+                        Your account type cannot be changed here.
+                    </span>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+
+                    <a th:href="@{/profile}" class="cancel-button">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="save-button">
+                        Save Changes →
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <footer class="profile-footer">
+        © 2026 SkillBridge. Your Skills. Your Time. Your Earnings.
+    </footer>
+
+</div>
+
+</body>
+</html>

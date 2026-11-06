@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | SkillBridge</title>
+
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #080817;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            background: #17172f;
+            border: 1px solid #292945;
+            border-radius: 20px;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .logo span {
+            color: #9657ff;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a5a5c5;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            border: 1px solid #353550;
+            background: #0d0d20;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #9657ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #7957ff, #a04cff);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .message {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ff7777;
+        }
+
+        .success {
+            color: #65e6a5;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #a5a5c5;
+        }
+
+        .register-link a {
+            color: #a879ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="logo">
+        Skill<span>Bridge</span>
+    </div>
+
+    <h1>Welcome Back!</h1>
+
+    <p class="subtitle">Login to continue your journey</p>
+
+    <div th:if="${param.error}" class="message">
+        Invalid username or password.
+    </div>
+
+    <div th:if="${param.logout}" class="message success">
+        You have successfully logged out.
+    </div>
+
+    <div th:if="${param.registered}" class="message success">
+        Registration successful! Please login.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+
+        <div class="form-group">
+            <label for="username">Username</label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                required
+                autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required>
+        </div>
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <div class="register-link">
+        Don't have an account?
+        <a th:href="@{/register}">Create Account</a>
+    </div>
+
+</div>
+
+</body>
+</html>

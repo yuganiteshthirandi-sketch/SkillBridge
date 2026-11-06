@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | SkillBridge</title>
+
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a th:href="@{/}">SkillBridge</a>
+        </div>
+
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/dashboard}">Dashboard</a>
+
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Profile Container -->
+    <main class="profile-container">
+
+        <!-- Success Message -->
+        <div th:if="${success}" class="success-message">
+            <span>✓</span>
+            <p th:text="${success}"></p>
+        </div>
+
+        <!-- Profile Header -->
+        <section class="profile-header">
+
+            <div class="profile-avatar">
+                <span th:text="${user.fullName != null && !user.fullName.isEmpty()
+                    ? #strings.substring(user.fullName, 0, 1)
+                    : 'U'}">U</span>
+            </div>
+
+            <div class="profile-header-info">
+                <h1 th:text="${user.fullName}">User Name</h1>
+
+                <p class="profile-username">
+                    @<span th:text="${user.username}">username</span>
+                </p>
+
+                <span class="account-badge"
+                      th:text="${user.accountType}">
+                    Member
+                </span>
+            </div>
+
+            <div class="profile-actions">
+                <a th:href="@{/profile/edit}" class="edit-profile-btn">
+                    ✏️ Edit Profile
+                </a>
+            </div>
+
+        </section>
+
+        <!-- Profile Information -->
+        <section class="profile-content">
+
+            <div class="profile-details-card">
+
+                <div class="section-heading">
+                    <h2>Personal Information</h2>
+                    <p>Your SkillBridge account details</p>
+                </div>
+
+                <div class="profile-info-grid">
+
+                    <div class="info-item">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value" th:text="${user.fullName}">
+                            User Name
+                        </span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">Username</span>
+                        <span class="info-value" th:text="${user.username}">
+                            username
+                        </span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">Email Address</span>
+                        <span class="info-value" th:text="${user.email}">
+                            user@example.com
+                        </span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">Account Type</span>
+                        <span class="info-value" th:text="${user.accountType}">
+                            Member
+                        </span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">Member Since</span>
+                        <span class="info-value"
+                              th:text="${user.registeredAt != null
+                              ? #temporals.format(user.registeredAt, 'dd MMM yyyy')
+                              : 'Recently Joined'}">
+                            Recently Joined
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Profile Completion -->
+            <div class="profile-completion-card">
+
+                <div class="section-heading">
+                    <h2>Profile Completion</h2>
+                    <p>Keep your profile information updated.</p>
+                </div>
+
+                <div class="completion-content">
+
+                    <div class="completion-circle"
+                         th:style="${profileCompletionStyle}">
+
+                        <span th:text="${profileCompletion} + '%'">
+                            0%
+                        </span>
+
+                    </div>
+
+                    <div class="completion-description">
+                        <h3>You're making progress!</h3>
+
+                        <p>
+                            Complete your profile information to build a
+                            better SkillBridge experience.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Skills Section -->
+        <section class="skills-section">
+
+            <div class="section-heading">
+                <h2>My Skills</h2>
+                <p>Your skills and learning interests will appear here.</p>
+            </div>
+
+            <div class="empty-skills-card">
+
+                <div class="empty-skills-icon">✨</div>
+
+                <h3>No Skills Added Yet</h3>
+
+                <p>
+                    Start sharing your skills or explore new skills
+                    to learn on SkillBridge.
+                </p>
+
+                <a th:href="@{/dashboard}" class="explore-skills-btn">
+                    Explore Dashboard
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- Mentor Reviews Section -->
+        <section class="reviews-section">
+
+            <div class="section-heading">
+                <h2>⭐ Mentor Reviews & Ratings</h2>
+                <p>Feedback from learners who completed sessions with you.</p>
+            </div>
+
+            <!-- Rating Summary -->
+            <div class="rating-summary-card">
+
+                <div class="rating-score">
+
+                    <h2 th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">
+                        0.0
+                    </h2>
+
+                    <div class="rating-stars">
+                        <span th:each="star : ${#numbers.sequence(1, 5)}"
+                              th:text="${star <= averageRating ? '★' : '☆'}"
+                              th:class="${star <= averageRating
+                              ? 'star-filled'
+                              : 'star-empty'}">
+                            ★
+                        </span>
+                    </div>
+
+                    <p>
+                        <span th:text="${totalReviews}">0</span>
+                        learner review(s)
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Review Cards -->
+            <div class="reviews-list">
+
+                <div class="review-card"
+                     th:each="review : ${reviews}">
+
+                    <div class="review-card-header">
+
+                        <div class="review-learner-info">
+
+                            <div class="review-avatar">
+                                <span th:text="${review.learner.fullName != null
+                                    && !review.learner.fullName.isEmpty()
+                                    ? #strings.substring(review.learner.fullName, 0, 1)
+                                    : 'L'}">
+                                    L
+                                </span>
+                            </div>
+
+                            <div>
+                                <h3 th:text="${review.learner.fullName}">
+                                    Learner Name
+                                </h3>
+
+                                <p th:text="'@' + ${review.learner.username}">
+                                    @learner
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="review-date"
+                             th:text="${review.createdAt != null
+                             ? #temporals.format(review.createdAt, 'dd MMM yyyy')
+                             : 'Recently'}">
+                            Recently
+                        </div>
+
+                    </div>
+
+                    <!-- Individual Rating -->
+                    <div class="individual-rating">
+
+                        <span th:each="star : ${#numbers.sequence(1, 5)}"
+                              th:text="${star <= review.rating ? '★' : '☆'}"
+                              th:class="${star <= review.rating
+                              ? 'star-filled'
+                              : 'star-empty'}">
+                            ★
+                        </span>
+
+                        <span class="rating-number"
+                              th:text="${review.rating} + '/5'">
+                            5/5
+                        </span>
+
+                    </div>
+
+                    <!-- Feedback -->
+                    <div class="review-feedback">
+
+                        <p th:if="${review.feedback != null
+                            && !review.feedback.isBlank()}"
+                           th:text="${review.feedback}">
+                            Learner feedback
+                        </p>
+
+                        <p th:if="${review.feedback == null
+                            || review.feedback.isBlank()}"
+                           class="no-feedback">
+                            The learner submitted a rating without written feedback.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Empty Reviews -->
+                <div class="empty-reviews-card"
+                     th:if="${reviews == null || reviews.isEmpty()}">
+
+                    <div class="empty-reviews-icon">💬</div>
+
+                    <h3>No Reviews Yet</h3>
+
+                    <p>
+                        Once learners complete their sessions and submit reviews,
+                        their ratings and feedback will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

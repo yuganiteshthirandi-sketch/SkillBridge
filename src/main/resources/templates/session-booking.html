@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book a Session | SkillBridge</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f1020;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #a78bfa;
+            text-decoration: none;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        .back-link:hover {
+            color: #c4b5fd;
+        }
+
+        .booking-card {
+            background: #191a2e;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #a78bfa, #818cf8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+        .skill-info {
+            background: #22233b;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 30px;
+            border: 1px solid #343550;
+        }
+
+        .skill-info h2 {
+            font-size: 21px;
+            margin-bottom: 12px;
+            color: #c4b5fd;
+        }
+
+        .skill-info p {
+            color: #cbd5e1;
+            margin: 7px 0;
+            font-size: 14px;
+        }
+
+        .price {
+            color: #34d399 !important;
+            font-weight: bold;
+            font-size: 17px !important;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 9px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px 15px;
+            background: #22233b;
+            border: 1px solid #3b3c59;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+
+        input[type="date"],
+        input[type="time"] {
+            color-scheme: dark;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        select option {
+            background: #22233b;
+            color: white;
+        }
+
+        .message {
+            padding: 13px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #6ee7b7;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            color: white;
+            border: none;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.35);
+        }
+
+        .cancel-btn {
+            background: #2a2b43;
+            color: #d1d5db;
+            border: 1px solid #3b3c59;
+        }
+
+        .cancel-btn:hover {
+            background: #343550;
+        }
+
+        @media (max-width: 600px) {
+            .booking-card {
+                padding: 22px;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a th:href="@{/skills/explore}" class="back-link">
+        ← Back to Explore Skills
+    </a>
+
+    <div class="booking-card">
+
+        <div class="header">
+            <h1>Book a Learning Session</h1>
+            <p>Schedule a session with your skill mentor.</p>
+        </div>
+
+        <div th:if="${errorMessage}"
+             class="message error-message"
+             th:text="${errorMessage}">
+        </div>
+
+        <div th:if="${successMessage}"
+             class="message success-message"
+             th:text="${successMessage}">
+        </div>
+
+        <div class="skill-info">
+
+            <h2 th:text="${skill.title}">Skill Title</h2>
+
+            <p>
+                <strong>Category:</strong>
+                <span th:text="${skill.category}">Category</span>
+            </p>
+
+            <p>
+                <strong>Mentor:</strong>
+                <span th:text="${teacher.username}">Mentor Name</span>
+            </p>
+
+            <p class="price">
+                ₹<span th:text="${skill.hourlyRate}">0</span> / hour
+            </p>
+
+        </div>
+
+        <form th:action="@{/sessions/book/{skillId}(skillId=${skill.skillId})}"
+              method="post">
+
+            <div class="form-group">
+                <label for="sessionDate">Session Date</label>
+
+                <input type="date"
+                       id="sessionDate"
+                       name="sessionDate"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="startTime">Preferred Start Time</label>
+
+                <input type="time"
+                       id="startTime"
+                       name="startTime"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="durationHours">Session Duration</label>
+
+                <select id="durationHours"
+                        name="durationHours"
+                        required>
+
+                    <option value="">Select duration</option>
+                    <option value="1">1 Hour</option>
+                    <option value="2">2 Hours</option>
+                    <option value="3">3 Hours</option>
+                    <option value="4">4 Hours</option>
+                    <option value="5">5 Hours</option>
+                    <option value="6">6 Hours</option>
+                    <option value="7">7 Hours</option>
+                    <option value="8">8 Hours</option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="instructions">
+                    Learning Goals / Instructions
+                </label>
+
+                <textarea id="instructions"
+                          name="instructions"
+                          placeholder="Describe what you want to learn during this session..."></textarea>
+            </div>
+
+            <div class="button-group">
+
+                <button type="submit" class="btn submit-btn">
+                    Confirm Booking
+                </button>
+
+                <a th:href="@{/skills/explore}"
+                   class="btn cancel-btn">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

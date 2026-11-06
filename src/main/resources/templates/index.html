@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | Your Skills. Your Time. Your Earnings.</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+
+<body th:attr="data-theme=${appearance == 'Light Mode' ? 'light' : 'dark'}">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <a th:href="@{/}" class="logo">
+        Skill<span>Bridge</span>
+    </a>
+
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a href="#categories">Explore Skills</a>
+        <a href="#how-it-works">How It Works</a>
+    </div>
+
+    <div class="nav-buttons">
+
+        <!-- Guest Navigation -->
+        <div th:if="${username == null}">
+          <a th:href="@{/login}" class="nav-login">Login</a>
+          <a th:href="@{/register}" class="nav-register">Get Started</a>
+        </div>
+
+        <!-- Logged-in User Navigation -->
+        <div th:if="${username != null}">
+           <a th:href="@{/dashboard}" class="nav-login">Dashboard</a>
+
+           <form th:action="@{/logout}" method="post" style="display: inline;">
+             <button type="submit" class="nav-register">Logout</button>
+           </form>
+        </div>   
+
+    </div>
+
+</nav>
+
+
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            ✨ Turn Your Free Time Into Opportunity
+        </div>
+
+        <h1>
+            Your Free Time.<br>
+            Your <span>Hidden Potential.</span>
+        </h1>
+
+        <p class="hero-description">
+            Share your skills, learn something new, and earn on your own schedule.
+            Every hour has the potential to create something meaningful.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#categories" class="primary-btn">
+                Explore Skills →
+            </a>
+
+            <a th:href="@{/register}" class="secondary-btn"
+               th:if="${username == null}">
+                Start Earning
+            </a>
+
+            <a href="#categories" class="secondary-btn"
+               th:if="${username != null}">
+                Discover Opportunities
+            </a>
+
+        </div>
+
+        <div class="hero-stats">
+
+            <div>
+                <h3>Flexible</h3>
+                <p>Your own schedule</p>
+            </div>
+
+            <div>
+                <h3>Hourly</h3>
+                <p>Fair skill-based work</p>
+            </div>
+
+            <div>
+                <h3>Unlimited</h3>
+                <p>Learning possibilities</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FLOATING SKILL CARDS -->
+    <div class="hero-visual">
+
+        <div class="orb"></div>
+
+        <div class="floating-card card-one">
+
+            <div class="card-icon">🎨</div>
+
+            <div>
+                <h4>Graphic Design</h4>
+                <p>₹400 / hour</p>
+            </div>
+
+        </div>
+
+        <div class="floating-card card-two">
+
+            <div class="card-icon">💻</div>
+
+            <div>
+                <h4>Web Development</h4>
+                <p>₹600 / hour</p>
+            </div>
+
+        </div>
+
+        <div class="floating-card card-three">
+
+            <div class="card-icon">🎸</div>
+
+            <div>
+                <h4>Music Lessons</h4>
+                <p>₹300 / hour</p>
+            </div>
+
+        </div>
+
+        <div class="floating-card card-four">
+
+            <div class="card-icon">📸</div>
+
+            <div>
+                <h4>Photography</h4>
+                <p>₹500 / hour</p>
+            </div>
+
+        </div>
+
+        <div class="center-circle">
+
+            <span>Skill</span>
+            <strong>Bridge</strong>
+            <small>Connect • Learn • Earn</small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CATEGORIES SECTION -->
+<section class="categories" id="categories">
+
+    <div class="section-heading">
+
+        <span class="section-tag">
+            DISCOVER POSSIBILITIES
+        </span>
+
+        <h2>
+            Skills are everywhere.
+        </h2>
+
+        <p>
+            Turn what you know into something valuable.
+        </p>
+
+    </div>
+
+
+    <div class="category-grid">
+
+        <div class="category-card">
+
+            <span>💻</span>
+
+            <h3>Technology</h3>
+
+            <p>
+                Coding, web development, technical support.
+            </p>
+
+            <a th:href="@{/register}">
+                Explore Skills →
+            </a>
+
+        </div>
+
+
+        <div class="category-card">
+
+            <span>🎨</span>
+
+            <h3>Creative Arts</h3>
+
+            <p>
+                Design, photography, video editing.
+            </p>
+
+            <a th:href="@{/register}">
+                Explore Skills →
+            </a>
+
+        </div>
+
+
+        <div class="category-card">
+
+            <span>📚</span>
+
+            <h3>Education</h3>
+
+            <p>
+                Tutoring, languages, academic guidance.
+            </p>
+
+            <a th:href="@{/register}">
+                Explore Skills →
+            </a>
+
+        </div>
+
+
+        <div class="category-card">
+
+            <span>🎵</span>
+
+            <h3>Everyday Skills</h3>
+
+            <p>
+                Music, cooking, fitness, hobbies.
+            </p>
+
+            <a th:href="@{/register}">
+                Explore Skills →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works" id="how-it-works">
+
+    <div class="section-heading">
+
+        <span class="section-tag">
+            SIMPLE PROCESS
+        </span>
+
+        <h2>
+            Three steps. Endless possibilities.
+        </h2>
+
+    </div>
+
+
+    <div class="steps-grid">
+
+        <div class="step-card">
+
+            <div class="step-number">01</div>
+
+            <h3>Discover a Skill</h3>
+
+            <p>
+                Find a skill you want to learn or share something you already know.
+            </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+            <div class="step-number">02</div>
+
+            <h3>Connect & Schedule</h3>
+
+            <p>
+                Choose your preferred hourly session and connect with another person.
+            </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+            <div class="step-number">03</div>
+
+            <h3>Learn or Earn</h3>
+
+            <p>
+                Complete sessions, build your reputation, and grow your opportunities.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+
+    <h2>
+        Your skills deserve an opportunity.
+    </h2>
+
+    <p>
+        Start learning, sharing, and earning with SkillBridge.
+    </p>
+
+    <a th:href="@{/register}"
+       class="primary-btn"
+       th:if="${username == null}">
+        Join SkillBridge →
+    </a>
+
+    <a href="#categories"
+       class="primary-btn"
+       th:if="${username != null}">
+        Explore Opportunities →
+    </a>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <a th:href="@{/}" class="logo">
+        Skill<span>Bridge</span>
+    </a>
+
+    <p>
+        Your Skills. Your Time. Your Earnings.
+    </p>
+
+    <p class="copyright">
+        © 2026 SkillBridge. All rights reserved.
+    </p>
+
+</footer>
+
+</body>
+</html>

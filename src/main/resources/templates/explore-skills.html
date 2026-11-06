@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explore Skills | SkillBridge</title>
+
+    <link rel="stylesheet" th:href="@{/css/skills.css}">
+
+    <style>
+        .explore-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        .explore-header {
+            margin-bottom: 35px;
+        }
+
+        .explore-tag {
+            color: #a78bfa;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .explore-header h1 {
+            font-size: 42px;
+            margin: 15px 0;
+            color: #ffffff;
+        }
+
+        .explore-header h1 span {
+            color: #8b5cf6;
+        }
+
+        .explore-header p {
+            color: #a1a1aa;
+            font-size: 16px;
+        }
+
+        .explore-search-section {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .explore-search-form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .explore-search-form input,
+        .explore-search-form select {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 18px;
+            background: #17172b;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .explore-search-form input:focus,
+        .explore-search-form select:focus {
+            border-color: #8b5cf6;
+        }
+
+        .explore-search-form input[type="number"] {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .explore-search-form select {
+            cursor: pointer;
+        }
+
+        .explore-search-btn {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .explore-search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(139, 92, 246, 0.3);
+        }
+
+        .explore-reset-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #d4d4d8;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .explore-section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .explore-section-heading h2 {
+            color: #ffffff;
+            font-size: 25px;
+        }
+
+        .explore-section-heading p {
+            color: #a1a1aa;
+            font-size: 14px;
+        }
+
+        .explore-skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .explore-skill-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .explore-skill-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .explore-skill-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .explore-card-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .explore-category {
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .explore-level {
+            background: rgba(16, 185, 129, 0.12);
+            color: #6ee7b7;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .explore-skill-card h3 {
+            color: #ffffff;
+            font-size: 21px;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .explore-description {
+            color: #a1a1aa;
+            font-size: 14px;
+            line-height: 1.7;
+            min-height: 70px;
+            overflow-wrap: anywhere;
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .teacher-avatar {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .teacher-details p {
+            color: #71717a;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .teacher-details h4 {
+            color: #e4e4e7;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        /* PHASE 13: MENTOR RATINGS */
+
+        .mentor-rating {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 16px;
+            font-size: 13px;
+        }
+
+        .mentor-rating .rating-star {
+            color: #fbbf24;
+            font-size: 17px;
+        }
+
+        .mentor-rating .rating-score {
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        .mentor-rating .rating-count {
+            color: #a1a1aa;
+        }
+
+        .no-rating {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 16px;
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .explore-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 22px;
+            gap: 10px;
+        }
+
+        .explore-rate span {
+            color: #a1a1aa;
+            font-size: 12px;
+        }
+
+        .explore-rate strong {
+            display: block;
+            color: #a78bfa;
+            font-size: 23px;
+            margin-top: 5px;
+        }
+
+        .explore-rate small {
+            color: #71717a;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .explore-empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 65px 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+        }
+
+        .explore-empty-state .empty-icon {
+            font-size: 45px;
+            margin-bottom: 20px;
+        }
+
+        .explore-empty-state h3 {
+            color: #ffffff;
+            font-size: 23px;
+            margin-bottom: 12px;
+        }
+
+        .explore-empty-state p {
+            color: #a1a1aa;
+            line-height: 1.7;
+        }
+
+        .explore-back-link {
+            display: inline-block;
+            margin-top: 35px;
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .explore-back-link:hover {
+                        color: #c4b5fd;
+        }
+
+        @media (max-width: 900px) {
+            .explore-skills-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .explore-container {
+                margin: 30px auto;
+                padding: 0 15px;
+            }
+
+            .explore-header h1 {
+                font-size: 32px;
+            }
+
+            .explore-skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .explore-search-form {
+                flex-direction: column;
+            }
+
+            .explore-search-form input,
+            .explore-search-form select {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .explore-search-btn,
+            .explore-reset-btn {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a th:href="@{/}">SkillBridge</a>
+        </div>
+
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/skills}">My Skills</a>
+            <a th:href="@{/profile}">My Profile</a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Explore Container -->
+    <main class="explore-container">
+
+        <!-- Page Header -->
+        <section class="explore-header">
+
+            <span class="explore-tag">SKILL DISCOVERY</span>
+
+            <h1>Explore <span>Skills</span></h1>
+
+            <p>
+                Discover new skills, connect with talented people,
+                and learn something valuable.
+            </p>
+
+        </section>
+
+        <!-- Search and Filter -->
+        <section class="explore-search-section">
+
+            <form th:action="@{/skills/explore}"
+                  method="get"
+                  class="explore-search-form">
+
+                <!-- Search by skill title -->
+                <input type="text"
+                       name="search"
+                       placeholder="Search for a skill..."
+                       th:value="${search}">
+
+                <!-- Category filter -->
+                <select name="category">
+                    <option value="All"
+                            th:selected="${selectedCategory == null
+                            or selectedCategory == ''
+                            or selectedCategory == 'All'}">
+                        All Categories
+                    </option>
+
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat}"
+                            th:text="${cat}"
+                            th:selected="${selectedCategory == cat}">
+                        Programming
+                    </option>
+                </select>
+
+                <!-- Proficiency filter -->
+                <select name="proficiencyLevel">
+                    <option value=""
+                            th:selected="${selectedProficiencyLevel == null
+                            or selectedProficiencyLevel == ''}">
+                        All Skill Levels
+                    </option>
+
+                    <option th:each="level : ${proficiencyLevels}"
+                            th:value="${level}"
+                            th:text="${level}"
+                            th:selected="${selectedProficiencyLevel == level}">
+                        Beginner
+                    </option>
+                </select>
+
+                <!-- Minimum and maximum hourly rate -->
+                <input type="number"
+                       name="minRate"
+                       min="0"
+                       step="1"
+                       placeholder="Min ₹ / hour"
+                       th:value="${minRate}">
+
+                <input type="number"
+                       name="maxRate"
+                       min="0"
+                       step="1"
+                       placeholder="Max ₹ / hour"
+                       th:value="${maxRate}">
+
+                <!-- Sorting -->
+                <select name="sort">
+                    <option value="default"
+                            th:selected="${selectedSort == null
+                            or selectedSort == 'default'}">
+                        Default Sorting
+                    </option>
+
+                    <option value="highest-rating"
+                            th:selected="${selectedSort == 'highest-rating'}">
+                        Highest Mentor Rating
+                    </option>
+
+                    <option value="rate-low-high"
+                            th:selected="${selectedSort == 'rate-low-high'}">
+                        Rate: Low to High
+                    </option>
+
+                    <option value="rate-high-low"
+                            th:selected="${selectedSort == 'rate-high-low'}">
+                        Rate: High to Low
+                    </option>
+
+                    <option value="name-a-z"
+                            th:selected="${selectedSort == 'name-a-z'}">
+                        Skill Name: A–Z
+                    </option>
+                </select>
+
+                <button type="submit" class="explore-search-btn">
+                    🔍 Apply Filters
+                </button>
+
+                <a th:href="@{/skills/explore}"
+                   class="explore-reset-btn">
+                    Clear Filters
+                </a>
+
+            </form>
+
+        </section>
+
+        <!-- Marketplace Heading -->
+        <section class="explore-section-heading">
+
+            <div>
+                <h2>Available Skills</h2>
+
+                <p>
+                    Find your next learning opportunity.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Skill Cards -->
+        <section class="explore-skills-grid">
+
+            <!-- Empty State -->
+            <div class="explore-empty-state"
+                 th:if="${skills.isEmpty()}">
+
+                <div class="empty-icon">🔎</div>
+
+                <h3>No Skills Found</h3>
+
+                <p>
+                    We couldn't find any matching skills.
+                    Try another search or category.
+                </p>
+
+            </div>
+
+            <!-- Skill Card -->
+            <a class="explore-skill-link"
+               th:each="skill : ${skills}"
+               th:href="@{/skills/details/{id}(id=${skill.skillId})}">
+
+                <article class="explore-skill-card">
+
+                    <div class="explore-card-top">
+
+                        <span class="explore-category"
+                              th:text="${skill.category}">
+                            Programming
+                        </span>
+
+                        <span class="explore-level"
+                              th:text="${skill.proficiencyLevel}">
+                            Intermediate
+                        </span>
+
+                    </div>
+
+                    <h3 th:text="${skill.title}">
+                        Java Development
+                    </h3>
+
+                    <p class="explore-description"
+                       th:text="${skill.description}">
+                        Learn programming skills.
+                    </p>
+
+                    <!-- Teacher Information -->
+                    <div class="teacher-info">
+
+                        <div class="teacher-avatar"
+                             th:text="${#strings.substring(skill.user.username, 0, 1).toUpperCase()}">
+                            U
+                        </div>
+
+                        <div class="teacher-details">
+
+                            <p>SKILL PROVIDER</p>
+
+                            <h4 th:text="${skill.user.username}">
+                                Teacher Name
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Mentor Rating -->
+                    <div class="mentor-rating"
+                         th:if="${teacherRatings[skill.user.userId] != null}">
+
+                        <span class="rating-star">★</span>
+
+                        <span class="rating-score"
+                              th:text="${#numbers.formatDecimal(teacherRatings[skill.user.userId]['averageRating'], 1, 1)}">
+                            5.0
+                        </span>
+
+                        <span class="rating-count"
+                              th:text="${'(' + teacherRatings[skill.user.userId]['reviewCount'] + ' reviews)'}">
+                        </span>
+
+                    </div>
+
+                    <!-- No Reviews Yet -->
+                    <div class="no-rating"
+                         th:unless="${teacherRatings[skill.user.userId] != null}">
+
+                        <span>☆</span>
+
+                        <span>Not rated yet</span>
+
+                    </div>
+
+                    <!-- Hourly Rate -->
+                    <div class="explore-card-footer">
+
+                        <div class="explore-rate">
+
+                            <span>Hourly Rate</span>
+
+                            <strong>
+                                ₹<span th:text="${skill.hourlyRate}">500</span>
+                                <small>/ hour</small>
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </a>
+
+        </section>
+
+        <!-- Back to Dashboard -->
+        <div>
+            <a th:href="@{/dashboard}"
+               class="explore-back-link">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+    </main>
+
+</body>
+</html>

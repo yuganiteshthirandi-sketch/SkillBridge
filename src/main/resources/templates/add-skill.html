@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Skill | SkillBridge</title>
+
+    <link rel="stylesheet" th:href="@{/css/skills.css}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+
+        <div class="nav-brand">
+            <a th:href="@{/}">Skill<span>Bridge</span></a>
+        </div>
+
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/skills}">My Skills</a>
+
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+
+    </nav>
+
+    <!-- Main Content -->
+    <main class="skills-container add-skill-container">
+
+        <!-- Page Header -->
+        <section class="page-header">
+
+            <div>
+                <p class="section-label">SKILL MANAGEMENT</p>
+
+                <h1>Add a New <span>Skill</span></h1>
+
+                <p class="page-description">
+                    Showcase your talent, set your hourly rate,
+                    and let others discover what you can do.
+                </p>
+            </div>
+
+            <a th:href="@{/skills}" class="back-btn">
+                ← Back to My Skills
+            </a>
+
+        </section>
+
+        <!-- Add Skill Form Section -->
+        <section class="add-skill-section">
+
+            <div class="form-heading">
+
+                <div class="form-icon">
+                    ✦
+                </div>
+
+                <div>
+                    <h2>Skill Details</h2>
+                    <p>Fill in the details of the skill you want to offer.</p>
+                </div>
+
+            </div>
+
+            <!-- Validation Error -->
+            <div th:if="${error}"
+                 class="error-message"
+                 th:text="${error}">
+            </div>
+
+            <!-- Skill Form -->
+            <form th:action="@{/skills/add}"
+                  method="post"
+                  class="skill-form">
+
+                <!-- Skill Title -->
+                <div class="form-group">
+
+                    <label for="title">Skill Title</label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="e.g. Full Stack Web Development"
+                        maxlength="100"
+                        required>
+
+                    <small>
+                        Give your skill a clear and professional title.
+                    </small>
+
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+
+                    <label for="category">Category</label>
+
+                    <select id="category"
+                            name="category"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select a category
+                        </option>
+
+                        <option value="Programming">Programming</option>
+                        <option value="Design">Design</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Video Editing">Video Editing</option>
+                        <option value="Education">Education</option>
+                        <option value="Language">Language</option>
+                        <option value="Music">Music</option>
+                        <option value="Business">Business</option>
+                        <option value="Others">Others</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Proficiency Level -->
+                <div class="form-group">
+
+                    <label for="proficiencyLevel">
+                        Proficiency Level
+                    </label>
+
+                    <select id="proficiencyLevel"
+                            name="proficiencyLevel"
+                            required>
+
+                        <option value="" disabled selected>
+                            Select your proficiency level
+                        </option>
+
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Expert">Expert</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Hourly Rate -->
+                <div class="form-group">
+
+                    <label for="hourlyRate">
+                        Hourly Rate (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="hourlyRate"
+                        name="hourlyRate"
+                        placeholder="e.g. 500"
+                        min="1"
+                        max="100000"
+                        step="0.01"
+                        required>
+
+                    <small>
+                        Set the amount you charge per hour.
+                    </small>
+
+                </div>
+
+                <!-- Description -->
+                <div class="form-group full-width">
+
+                    <label for="description">
+                        Skill Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="6"
+                        maxlength="1000"
+                        placeholder="Describe your skill, experience, and what you can offer..."
+                        required></textarea>
+
+                    <small>
+                        Maximum 1000 characters.
+                    </small>
+
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+
+                    <a th:href="@{/skills}" class="cancel-btn">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="submit-skill-btn">
+                        ✦ Save Skill
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="skills-footer">
+
+        <p>
+            © 2026 SkillBridge.
+            Your Skills. Your Time. Your Earnings.
+        </p>
+
+    </footer>
+
+</body>
+</html>

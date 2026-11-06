@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Bookings | SkillBridge</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Default Dark Mode Theme Variables */
+        :root {
+            --bg-color: #0b0b16;
+            --text-primary: #ffffff;
+            --text-secondary: #c4c4d4;
+            --text-muted: #a1a1aa;
+            --nav-bg: rgba(20, 20, 40, 0.8);
+            --nav-border: rgba(139, 92, 246, 0.2);
+            --card-bg: linear-gradient(145deg, rgba(30, 30, 55, 0.95), rgba(17, 17, 32, 0.95));
+            --card-border: rgba(139, 92, 246, 0.25);
+            --card-shadow: rgba(0, 0, 0, 0.25);
+            --heading-color: #e9e5ff;
+            --box-bg: rgba(139, 92, 246, 0.08);
+            --box-border: rgba(139, 92, 246, 0.12);
+            --box-label: #9292aa;
+            --box-value: #e5e7eb;
+            --instructions-bg: rgba(255, 255, 255, 0.03);
+            --review-bg: rgba(139, 92, 246, 0.07);
+            --review-border: rgba(139, 92, 246, 0.25);
+            --review-title: #c4b5fd;
+            --input-bg: #11111f;
+            --input-border: rgba(139, 92, 246, 0.25);
+            --input-text: #ffffff;
+            --input-placeholder: #71717a;
+            --footer-border: rgba(139, 92, 246, 0.15);
+            --empty-bg: rgba(255, 255, 255, 0.03);
+            --empty-border: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Light Mode Theme Overrides */
+        body[data-theme="light"] {
+            --bg-color: #f4f5fb;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --nav-bg: #ffffff;
+            --nav-border: #e5e7eb;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --card-shadow: rgba(139, 92, 246, 0.08);
+            --heading-color: #111827;
+            --box-bg: #f8fafc;
+            --box-border: #e2e8f0;
+            --box-label: #64748b;
+            --box-value: #0f172a;
+            --instructions-bg: #f1f5f9;
+            --review-bg: #f5f3ff;
+            --review-border: #ddd6fe;
+            --review-title: #6d28d9;
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --input-text: #0f172a;
+            --input-placeholder: #94a3b8;
+            --footer-border: #e2e8f0;
+            --empty-bg: #ffffff;
+            --empty-border: #cbd5e1;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 7%;
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--nav-border);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a,
+        .nav-links button {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links button:hover {
+            color: #8b5cf6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 55px auto;
+            padding: 0 25px;
+        }
+
+        .page-header {
+            margin-bottom: 35px;
+        }
+
+        .page-tag {
+            color: #8b5cf6;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .page-header h1 {
+            font-size: 40px;
+            margin: 15px 0;
+            color: var(--heading-color);
+        }
+
+        .page-header h1 span {
+            color: #8b5cf6;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .message {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid #10b981;
+            color: #059669;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .booking-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-4px);
+            border-color: #8b5cf6;
+            box-shadow: 0 12px 30px var(--card-shadow);
+        }
+
+        .booking-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .booking-card h2 {
+            font-size: 23px;
+            color: var(--heading-color);
+            margin-bottom: 8px;
+        }
+
+        .mentor {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .mentor strong {
+            color: var(--text-primary);
+        }
+
+        .status {
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: #d97706;
+        }
+
+        .status-accepted {
+            background: rgba(16, 185, 129, 0.15);
+            color: #059669;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.15);
+            color: #dc2626;
+        }
+
+        .status-completed {
+            background: rgba(99, 102, 241, 0.15);
+            color: #4f46e5;
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .detail-box {
+            background: var(--box-bg);
+            border: 1px solid var(--box-border);
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .detail-box span {
+            display: block;
+            color: var(--box-label);
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .detail-box strong {
+            color: var(--box-value);
+            font-size: 15px;
+        }
+
+        .instructions {
+            background: var(--instructions-bg);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .instructions span {
+            display: block;
+            color: var(--box-label);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .instructions p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        /* Review Section */
+        .review-section {
+            margin-top: 22px;
+            padding: 22px;
+            background: var(--review-bg);
+            border: 1px solid var(--review-border);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .review-section h3 {
+            color: var(--review-title);
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .review-section p {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .rating-label,
+        .feedback-label {
+            display: block;
+            color: var(--text-primary);
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .rating-options {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .rating-options input {
+            display: none;
+        }
+
+        .rating-options label {
+            font-size: 34px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .rating-options label:hover,
+        .rating-options label:hover ~ label,
+        .rating-options input:checked ~ label {
+            color: #fbbf24;
+        }
+
+        .feedback-input {
+            width: 100%;
+            min-height: 110px;
+            padding: 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: var(--input-text);
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+            margin-bottom: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-input:focus {
+            border-color: #8b5cf6;
+        }
+
+        .feedback-input::placeholder {
+            color: var(--input-placeholder);
+        }
+
+        .review-button {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .review-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .review-note {
+            margin-top: 12px;
+            color: var(--text-muted);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .booking-footer {
+            border-top: 1px solid var(--footer-border);
+            padding-top: 15px;
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 70px 25px;
+            background: var(--empty-bg);
+            border: 1px dashed var(--empty-border);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state h2 {
+            font-size: 25px;
+            margin-bottom: 12px;
+            color: var(--heading-color);
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .explore-button {
+            display: inline-block;
+            padding: 13px 25px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .explore-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        @media (max-width: 800px) {
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .booking-card {
+                padding: 20px;
+            }
+
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-top {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body th:attr="data-theme=${appearance == 'Light Mode' ? 'light' : 'dark'}">
+
+<nav>
+    <div class="logo">
+        SkillBridge
+    </div>
+
+    <div class="nav-links">
+        <a th:href="@{/dashboard}">Dashboard</a>
+        <a th:href="@{/skills}">My Skills</a>
+        <a th:href="@{/skills/explore}">Explore</a>
+        <a th:href="@{/profile}">Profile</a>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit"
+                    style="background:none; border:none; cursor:pointer;">
+                Logout
+            </button>
+        </form>
+    </div>
+</nav>
+
+<main class="container">
+
+    <section class="page-header">
+        <span class="page-tag">YOUR LEARNING JOURNEY</span>
+
+        <h1>
+            My <span>Bookings</span>
+        </h1>
+
+        <p>
+            Track your scheduled learning sessions and booking status.
+        </p>
+    </section>
+
+    <div th:if="${successMessage}"
+         class="message success-message"
+         th:text="${successMessage}">
+    </div>
+
+    <div th:if="${errorMessage}"
+         class="message error-message"
+         th:text="${errorMessage}">
+    </div>
+
+    <!-- BOOKINGS AVAILABLE -->
+
+    <section th:if="${bookings != null and !bookings.isEmpty()}"
+             class="booking-grid">
+
+        <div class="booking-card"
+             th:each="booking : ${bookings}">
+
+            <div class="booking-top">
+
+                <div>
+                    <h2 th:text="${booking.skill.title}">
+                        Skill Title
+                    </h2>
+
+                    <p class="mentor">
+                        Mentor:
+                        <strong th:text="${booking.skill.user.username}">
+                            Mentor Name
+                        </strong>
+                    </p>
+                </div>
+
+                <span class="status"
+                      th:classappend="${booking.status != null ? ' status-' + booking.status.toLowerCase() : ' status-pending'}"
+                      th:text="${booking.status}">
+                    PENDING
+                </span>
+
+            </div>
+
+            <div class="booking-details">
+
+                <div class="detail-box">
+                    <span>Session Date</span>
+                    <strong th:text="${booking.sessionDate}">
+                        Date
+                    </strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Start Time</span>
+                    <strong th:text="${booking.startTime}">
+                        Time
+                    </strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Duration</span>
+                    <strong>
+                        <span th:text="${booking.durationHours}"
+                              style="display:inline; color:inherit; font-size:15px;">
+                            1
+                        </span>
+                        Hour(s)
+                    </strong>
+                </div>
+
+                <div class="detail-box">
+                    <span>Booking Status</span>
+                    <strong th:text="${booking.status}">
+                        PENDING
+                    </strong>
+                </div>
+
+            </div>
+
+            <div class="instructions"
+                 th:if="${booking.instructions != null and !booking.instructions.isEmpty()}">
+
+                <span>Learning Goals / Instructions</span>
+
+                <p th:text="${booking.instructions}">
+                    Instructions
+                </p>
+
+            </div>
+
+            <!-- REVIEW SECTION: COMPLETED BOOKINGS -->
+
+            <div th:if="${booking.status != null and booking.status.toString() == 'COMPLETED'}">
+
+                <!-- Review Already Submitted -->
+
+                <div class="review-section"
+                     th:if="${reviewedBookingIds != null and reviewedBookingIds.contains(booking.bookingId)}">
+
+                    <h3>⭐ Review Submitted</h3>
+
+                    <p>
+                        Thank you for sharing your experience!
+                        Your review has been successfully submitted.
+                    </p>
+
+                </div>
+
+                <!-- Review Form -->
+
+                <div class="review-section"
+                     th:unless="${reviewedBookingIds != null and reviewedBookingIds.contains(booking.bookingId)}">
+
+                    <h3>⭐ Review Your Session</h3>
+
+                    <p>
+                        Your session is completed! Share your experience
+                        and help other learners choose the right mentor.
+                    </p>
+
+                    <form th:action="@{/sessions/{bookingId}/review(bookingId=${booking.bookingId})}"
+                          method="post">
+
+                        <label class="rating-label">
+                            Rate your mentor
+                        </label>
+
+                        <div class="rating-options">
+
+                            <input type="radio"
+                                   th:id="'star5-' + ${booking.bookingId}"
+                                   name="rating"
+                                   value="5"
+                                   required>
+
+                            <label th:for="'star5-' + ${booking.bookingId}"
+                                   title="5 stars">★</label>
+
+                            <input type="radio"
+                                   th:id="'star4-' + ${booking.bookingId}"
+                                   name="rating"
+                                   value="4">
+
+                            <label th:for="'star4-' + ${booking.bookingId}"
+                                   title="4 stars">★</label>
+
+                            <input type="radio"
+                                   th:id="'star3-' + ${booking.bookingId}"
+                                   name="rating"
+                                   value="3">
+
+                            <label th:for="'star3-' + ${booking.bookingId}"
+                                   title="3 stars">★</label>
+
+                            <input type="radio"
+                                   th:id="'star2-' + ${booking.bookingId}"
+                                   name="rating"
+                                   value="2">
+
+                            <label th:for="'star2-' + ${booking.bookingId}"
+                                   title="2 stars">★</label>
+
+                            <input type="radio"
+                                   th:id="'star1-' + ${booking.bookingId}"
+                                   name="rating"
+                                   value="1">
+
+                            <label th:for="'star1-' + ${booking.bookingId}"
+                                   title="1 star">★</label>
+
+                        </div>
+
+                        <label class="feedback-label">
+                            Your Feedback
+                        </label>
+
+                        <textarea class="feedback-input"
+                                  name="feedback"
+                                  maxlength="1000"
+                                  placeholder="Share what you learned and how your mentor helped you..."></textarea>
+
+                        <button type="submit"
+                                class="review-button">
+                            Submit Review →
+                        </button>
+
+                        <div class="review-note">
+                            Your feedback helps improve the SkillBridge community.
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="booking-footer">
+                SkillBridge Session Booking
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- EMPTY BOOKINGS -->
+
+    <section th:if="${bookings == null or bookings.isEmpty()}"
+             class="empty-state">
+
+        <div class="empty-icon">
+            ◷
+        </div>
+
+        <h2>No Bookings Yet</h2>
+
+        <p>
+            You haven't booked any learning sessions yet.<br>
+            Explore the marketplace and find a mentor to learn from.
+        </p>
+
+        <a th:href="@{/skills/explore}"
+           class="explore-button">
+            Explore Skills →
+        </a>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillBridge | Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body th:attr="data-theme=${appearance == 'Light Mode' ? 'light' : 'dark'}">
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span class="logo-icon">✦</span>
+            SkillBridge
+        </div>
+
+        <div class="sidebar-menu">
+
+            <p class="menu-label">MENU</p>
+
+            <a th:href="@{/dashboard}" class="menu-item active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a th:href="@{/skills/explore}" class="menu-item">
+                <span>⌕</span> Explore Skills
+            </a>
+
+            <a th:href="@{/sessions/my-bookings}" class="menu-item">
+                <span>◷</span> My Sessions
+            </a>
+
+            <a th:href="@{/sessions/my-bookings}" class="menu-item">
+                <span>▤</span> My Learning
+            </a>
+
+            <a th:href="@{/sessions/teacher-bookings}" class="menu-item">
+                <span>✧</span> My Teaching
+            </a>
+
+            <p class="menu-label account-label">ACCOUNT</p>
+
+            <a th:href="@{/profile}" class="menu-item">
+                <span>👤</span> My Profile
+            </a>
+
+            <a th:href="@{/settings}" class="menu-item">
+                <span>⚙</span> Settings
+            </a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="menu-item logout-button">
+                    <span>↪</span> Logout
+                </button>
+            </form>
+
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <div class="upgrade-card">
+                <div class="upgrade-icon">✦</div>
+
+                <h3>Unlock Your Potential</h3>
+
+                <p>
+                    Connect, learn, and grow with SkillBridge.
+                </p>
+
+                <a th:href="@{/skills/explore}" class="upgrade-button">
+                    Explore More
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Navbar -->
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                <span>SkillBridge</span>
+                <span class="breadcrumb-divider">/</span>
+                <strong>Dashboard</strong>
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification-button" type="button">
+                    ♧
+                </button>
+
+                <div class="profile">
+
+                    <div class="profile-avatar">
+                        👤
+                    </div>
+
+                    <div class="profile-info">
+                        <h4 th:text="${username}">User</h4>
+                        <p>SkillBridge Member</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+
+            <div class="welcome-text">
+
+                <p class="welcome-tag">
+                    YOUR PERSONAL SPACE
+                </p>
+
+                <h1>
+                    Welcome back,
+                    <span th:text="${username}">User</span>!
+                </h1>
+
+                <p>
+                    Your skills have potential. Let's turn your time into
+                    something valuable.
+                </p>
+
+            </div>
+
+            <div class="welcome-visual">
+                <div class="visual-orb">
+                    <span>✦</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Dynamic Statistics -->
+        <section class="stats-grid">
+
+            <!-- Total Sessions -->
+            <div class="stat-card">
+
+                <div class="stat-icon purple">◷</div>
+
+                <p class="stat-title">Total Sessions</p>
+
+                <h2 th:text="${totalSessions}">0</h2>
+
+                <span class="stat-description">
+                    Your session activity
+                </span>
+
+            </div>
+
+            <!-- Skills Learning -->
+            <div class="stat-card">
+
+                <div class="stat-icon blue">▤</div>
+
+                <p class="stat-title">Skills Learning</p>
+
+                <h2 th:text="${skillsLearning}">0</h2>
+
+                <span class="stat-description">
+                    Skills in progress
+                </span>
+
+            </div>
+
+            <!-- Skills Teaching -->
+            <div class="stat-card">
+
+                <div class="stat-icon pink">✧</div>
+
+                <p class="stat-title">Skills Teaching</p>
+
+                <h2 th:text="${skillsTeaching}">0</h2>
+
+                <span class="stat-description">
+                    Skills you are sharing
+                </span>
+
+            </div>
+
+            <!-- Total Earnings -->
+            <div class="stat-card">
+
+                <div class="stat-icon green">₹</div>
+
+                <p class="stat-title">Total Earnings</p>
+
+                <h2>
+                    ₹<span th:text="${totalEarnings}">0</span>
+                </h2>
+
+                <span class="stat-description">
+                    Your teaching earnings
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- Main Dashboard Grid -->
+        <section class="dashboard-grid">
+
+            <!-- Explore Skills -->
+            <div class="content-card explore-card">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>Explore Skills</h2>
+
+                        <p>
+                            Discover something new to learn.
+                        </p>
+                    </div>
+
+                    <a th:href="@{/skills/explore}" class="view-all">
+                        View All ↗
+                    </a>
+
+                </div>
+
+                <div class="skill-grid">
+
+                    <a th:href="@{/skills/explore}" class="skill-card">
+
+                        <div class="skill-icon technology">
+                            💻
+                        </div>
+
+                        <h3>Technology</h3>
+
+                        <p>
+                            Programming, AI & Web Development
+                        </p>
+
+                        <span class="skill-tag">
+                            Explore →
+                        </span>
+
+                    </a>
+
+                    <a th:href="@{/skills/explore}" class="skill-card">
+
+                        <div class="skill-icon creative">
+                            🎨
+                        </div>
+
+                        <h3>Creative Arts</h3>
+
+                        <p>
+                            Design, Photography & Creativity
+                        </p>
+
+                        <span class="skill-tag">
+                            Explore →
+                        </span>
+
+                    </a>
+
+                    <a th:href="@{/skills/explore}" class="skill-card">
+
+                        <div class="skill-icon education">
+                            📚
+                        </div>
+
+                        <h3>Education</h3>
+
+                        <p>
+                            Languages, Academics & Knowledge
+                        </p>
+
+                        <span class="skill-tag">
+                            Explore →
+                        </span>
+
+                    </a>
+
+                    <a th:href="@{/skills/explore}" class="skill-card">
+
+                        <div class="skill-icon lifestyle">
+                            🌱
+                        </div>
+
+                        <h3>Lifestyle</h3>
+
+                        <p>
+                            Fitness, Cooking & Daily Skills
+                        </p>
+
+                        <span class="skill-tag">
+                            Explore →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Dynamic Recent Activity -->
+            <div class="content-card activity-card">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>Recent Activity</h2>
+
+                        <p>
+                            Your latest updates.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Activity List -->
+                <div class="activity-list"
+                     th:if="${recentActivity != null and !recentActivity.isEmpty()}">
+
+                    <div class="activity-item"
+                         th:each="booking : ${recentActivity}">
+
+                        <div class="activity-icon"
+                             th:classappend="${booking.status == 'ACCEPTED'} ? ' accepted' :
+                                            (${booking.status == 'REJECTED'} ? ' rejected' :
+                                            (${booking.status == 'COMPLETED'} ? ' completed' : ' pending'))">
+
+                            <span th:text="${booking.status == 'ACCEPTED'} ? '✓' :
+                                           (${booking.status == 'REJECTED'} ? '✕' :
+                                           (${booking.status == 'COMPLETED'} ? '★' : '◷'))">
+                                ◷
+                            </span>
+
+                        </div>
+
+                        <div class="activity-details">
+
+                            <h3 th:text="${booking.skill.title}">
+                                Skill Name
+                            </h3>
+
+                            <p th:if="${booking.learner.username == username}">
+                                You booked a learning session.
+                            </p>
+
+                            <p th:if="${booking.skill.user.username == username}">
+                                Someone booked a session for your skill.
+                            </p>
+
+                            <span class="activity-status"
+                                  th:text="${booking.status}">
+                                PENDING
+                            </span>
+
+                            <small th:if="${booking.createdAt != null}"
+                                   th:text="${#temporals.format(booking.createdAt, 'dd MMM yyyy, hh:mm a')}">
+                                Date
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Empty Activity -->
+                <div class="empty-activity"
+                     th:if="${recentActivity == null or recentActivity.isEmpty()}">
+
+                    <div class="empty-icon">
+                        ◷
+                    </div>
+
+                    <h3>No activity yet</h3>
+
+                    <p>
+                        Your learning and teaching activities
+                        will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Bottom Banner -->
+        <section class="bottom-banner">
+
+            <div>
+
+                <p class="banner-tag">
+                    SHARE YOUR KNOWLEDGE
+                </p>
+
+                <h2>
+                    Turn your skills into
+                    <span>opportunities.</span>
+                </h2>
+
+                <p>
+                    Teach what you know. Learn what you love.
+                    Earn through your skills.
+                </p>
+
+                <a th:href="@{/skills/add}" class="banner-button">
+                    Add Your Skill →
+                </a>
+
+            </div>
+
+            <div class="banner-visual">
+                <span>✦</span>
+            </div>
+
+        </section>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+
+            <p>
+                © 2026 SkillBridge.
+                Your Skills. Your Time. Your Earnings.
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

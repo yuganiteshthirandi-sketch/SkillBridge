@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | SkillBridge</title>
+
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #080918;
+            color: #f5f3ff;
+        }
+
+        .register-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+
+        .register-left {
+            padding: 45px 8%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: radial-gradient(circle at center,
+                rgba(121, 87, 255, 0.18),
+                #080918 70%);
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 80px;
+        }
+
+        .logo span {
+            color: #7957ff;
+        }
+
+        .register-left h1 {
+            font-size: 55px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .register-left h1 span {
+            color: #a78bfa;
+        }
+
+        .register-left p {
+            color: #a5accb;
+            font-size: 17px;
+            line-height: 1.8;
+            max-width: 500px;
+        }
+
+        .skill-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid rgba(167, 139, 250, 0.4);
+            background: rgba(121, 87, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin: 60px auto 20px;
+            box-shadow: 0 0 80px rgba(121, 87, 255, 0.2);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .skill-circle h2 {
+            font-size: 35px;
+            margin: 5px;
+        }
+
+        .skill-circle span {
+            color: #a78bfa;
+            font-size: 18px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .register-right {
+            padding: 50px 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-form {
+            max-width: 500px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .register-form h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a5accb;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            background: #11142a;
+            color: #f5f3ff;
+            font-size: 15px;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #7957ff;
+            box-shadow: 0 0 15px rgba(121, 87, 255, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: #7780a3;
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #a5accb;
+            font-size: 13px;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .terms input {
+            margin-top: 3px;
+            accent-color: #7957ff;
+        }
+
+        .terms a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 17px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7957ff, #603ce5);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(121, 87, 255, 0.3);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #a5accb;
+        }
+
+        .login-link a {
+            color: #a78bfa;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .back-home a {
+            color: #a5accb;
+            text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+            .register-container {
+                grid-template-columns: 1fr;
+            }
+
+            .register-left {
+                padding: 35px 8%;
+            }
+
+            .logo {
+                margin-bottom: 40px;
+            }
+
+            .register-left h1 {
+                font-size: 40px;
+            }
+
+            .skill-circle {
+                width: 150px;
+                height: 150px;
+                margin: 30px auto;
+            }
+
+            .register-right {
+                padding: 40px 8%;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .register-left h1 {
+                font-size: 34px;
+            }
+
+            .register-form h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-container">
+
+    <!-- LEFT SIDE -->
+    <section class="register-left">
+
+        <div class="logo">
+            Skill<span>Bridge</span>
+        </div>
+
+        <h1>
+            Unlock Your<br>
+            <span>Hidden Potential.</span>
+        </h1>
+
+        <p>
+            Join a community where your skills, passions, and free time
+            create real opportunities. Learn something new or turn your
+            talent into earnings.
+        </p>
+
+        <div class="skill-circle">
+            <span>Skill</span>
+            <h2>Bridge</h2>
+        </div>
+
+    </section>
+
+    <!-- RIGHT SIDE -->
+    <section class="register-right">
+
+        <div class="register-form">
+
+            <h2>Create Account</h2>
+
+            <p class="subtitle">
+                Start your SkillBridge journey today.
+            </p>
+
+            <form th:action="@{/register}" method="post">
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter your full name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Choose a username"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a strong password"
+                        minlength="8"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Re-enter your password"
+                        minlength="8"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="accountType">I want to</label>
+
+                    <select id="accountType" name="accountType" required>
+                        <option value="LEARNER">Learn New Skills</option>
+                        <option value="PROVIDER">Share Skills & Earn</option>
+                        <option value="BOTH">Learn & Earn</option>
+                    </select>
+                </div>
+
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+
+                    <label for="terms">
+                        I agree to the
+                        <a href="#">Terms & Conditions</a>
+                        and
+                        <a href="#">Privacy Policy</a>.
+                    </label>
+                </div>
+
+                <button type="submit" class="register-btn">
+                    Create Account →
+                </button>
+
+            </form>
+
+            <div class="login-link">
+                Already have an account?
+                <a th:href="@{/login}">Login</a>
+            </div>
+
+            <div class="back-home">
+                <a th:href="@{/}">← Back to Home</a>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>

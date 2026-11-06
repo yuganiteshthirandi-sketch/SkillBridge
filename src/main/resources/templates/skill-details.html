@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Skill Details | SkillBridge</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        background: #0b0b16;
+        color: #ffffff;
+        min-height: 100vh;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 22px 7%;
+        background: rgba(20, 20, 40, 0.8);
+        border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .logo {
+        font-size: 25px;
+        font-weight: bold;
+        color: #a78bfa;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: #c4c4d4;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: #a78bfa;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 60px auto;
+        padding: 0 25px;
+    }
+
+    .back-link {
+        color: #a78bfa;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 25px;
+    }
+
+    .back-link:hover {
+        color: #c4b5fd;
+    }
+
+    .details-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+    }
+
+    .skill-card,
+    .teacher-card {
+        background: linear-gradient(
+            145deg,
+            rgba(30, 30, 55, 0.95),
+            rgba(17, 17, 32, 0.95)
+        );
+
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        border-radius: 22px;
+        padding: 35px;
+
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .category {
+        display: inline-block;
+        background: rgba(139, 92, 246, 0.15);
+        color: #c4b5fd;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 34px;
+        margin-bottom: 18px;
+        color: #ffffff;
+    }
+
+    .description {
+        color: #b8b8cc;
+        line-height: 1.8;
+        font-size: 15px;
+        margin-bottom: 30px;
+        white-space: pre-line;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-bottom: 30px;
+    }
+
+    .info-box {
+        background: rgba(139, 92, 246, 0.08);
+        border: 1px solid rgba(139, 92, 246, 0.15);
+        border-radius: 14px;
+        padding: 18px;
+    }
+
+    .info-box span {
+        display: block;
+        color: #9292aa;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .info-box strong {
+        color: #e9e5ff;
+        font-size: 17px;
+    }
+
+    .price {
+        color: #a78bfa !important;
+        font-size: 24px !important;
+    }
+
+    .teacher-card {
+        text-align: center;
+        height: fit-content;
+    }
+
+    .teacher-avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+
+        background: linear-gradient(
+            135deg,
+            #7c3aed,
+            #4f46e5
+        );
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 35px;
+        font-weight: bold;
+
+        margin: 0 auto 20px;
+
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+    }
+
+    .teacher-card h2 {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+
+    .teacher-label {
+        color: #a78bfa;
+        font-size: 13px;
+        margin-bottom: 25px;
+    }
+
+    .teacher-info {
+        background: rgba(139, 92, 246, 0.08);
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+
+        color: #c4c4d4;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .booking-button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+
+        border: none;
+        border-radius: 12px;
+
+        background: linear-gradient(
+            135deg,
+            #7c3aed,
+            #6366f1
+        );
+
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+
+        text-decoration: none;
+        text-align: center;
+
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .booking-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(124, 58, 237, 0.35);
+    }
+
+    .booking-note {
+        font-size: 12px;
+        color: #9292aa;
+        margin-top: 12px;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 800px) {
+
+        .details-layout {
+            grid-template-columns: 1fr;
+        }
+
+        nav {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .nav-links {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 27px;
+        }
+
+        .skill-card,
+        .teacher-card {
+            padding: 25px;
+        }
+    }
+
+    @media (max-width: 500px) {
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<nav>
+
+```
+<div class="logo">
+    SkillBridge
+</div>
+
+<div class="nav-links">
+    <a th:href="@{/dashboard}">Dashboard</a>
+    <a th:href="@{/skills}">My Skills</a>
+    <a th:href="@{/skills/explore}">Explore</a>
+    <a th:href="@{/profile}">Profile</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit"
+                style="background:none; border:none; color:#c4c4d4; cursor:pointer; font-size:14px;">
+            Logout
+        </button>
+    </form>
+</div>
+```
+
+</nav>
+
+<div class="container">
+
+```
+<a th:href="@{/skills/explore}" class="back-link">
+    ← Back to Explore Skills
+</a>
+
+<div class="details-layout">
+
+    <!-- Skill Information -->
+
+    <div class="skill-card">
+
+        <span class="category"
+              th:text="${skill.category}">
+            Programming
+        </span>
+
+        <h1 th:text="${skill.title}">
+            Skill Title
+        </h1>
+
+        <p class="description"
+           th:text="${skill.description}">
+            Skill description will appear here.
+        </p>
+
+        <div class="info-grid">
+
+            <!-- Proficiency Level -->
+
+            <div class="info-box">
+
+                <span>Proficiency Level</span>
+
+                <strong th:text="${skill.proficiencyLevel}">
+                    Intermediate
+                </strong>
+
+            </div>
+
+            <!-- Hourly Rate -->
+
+            <div class="info-box">
+
+                <span>Hourly Rate</span>
+
+                <strong class="price">
+                    ₹<span th:text="${skill.hourlyRate}">500</span>/hr
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Teacher Profile -->
+
+    <div class="teacher-card">
+
+        <div class="teacher-avatar"
+             th:text="${teacher.username.substring(0, 1).toUpperCase()}">
+            T
+        </div>
+
+        <h2 th:text="${teacher.username}">
+            Teacher Name
+        </h2>
+
+        <p class="teacher-label">
+            SkillBridge Instructor
+        </p>
+
+        <div class="teacher-info">
+            Learn directly from this instructor and improve your skills.
+        </div>
+
+        <!-- CONNECTED BOOKING BUTTON -->
+
+        <a th:href="@{/sessions/book/{skillId}(skillId=${skill.skillId})}"
+           class="booking-button">
+            Book a Session →
+        </a>
+
+        <p class="booking-note">
+            Choose your preferred date, time, and session duration.
+        </p>
+
+    </div>
+
+</div>
+</div>
+
+</body>
+</html>
